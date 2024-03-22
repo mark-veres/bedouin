@@ -26,8 +26,10 @@ foreach ($url_parts as $i => $segment) {
     $matches = (sizeof($dynamic_segments)!=0) ? $dynamic_segments : $matching_segments;
 
     if (sizeof($matches) == 0) {
-        echo "404";
-        die();
+        if (file_exists("./routes/404.php")) {
+            die(include "./routes/404.php");
+        }
+        die("<h1>404 Page Not found</h1>");
     }
 
     if ($matches[0]->method != $method && $matches[0]->method != "all") die("wrong method");

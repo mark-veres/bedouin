@@ -30,7 +30,8 @@ foreach($objects as $name => $object) {
         return $e != "";
     });
 
-    array_push($routes, [$parts, $method, $file_path]);
+    if ($path != "404")
+        array_push($routes, [$parts, $method, $file_path]);
 }
 
 uasort($routes, function($a, $b) {
