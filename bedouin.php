@@ -13,6 +13,14 @@ if (sizeof($url_parts) == 0) {
 
     if ($obj->method != $method || $obj->method == "all") return;
     include "./routes/".$obj->file;
+    exit();
+}
+
+if ($url_parts[0] == "static") {
+    $filename = implode("/", $url_parts);
+    header('Content-Type: '.mime_content_type($filename));
+    readfile("./".$filename);
+    exit();
 }
 
 $current = $map;

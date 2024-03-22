@@ -37,6 +37,11 @@ wget https://raw.githubusercontent.com/mark-veres/bedouin/main/cartograph.php
 - create a `404.php` file in the `routes` folder
 - this file does not support custom HTTP methods
 
+## static files
+- put all your static files in the `static` directory
+- access these files at the `/static/*` url
+- file names are case- and extension-sensitive
+
 > [!NOTE]
 > coming soon:
 > - middleware
