@@ -18,6 +18,9 @@ if (sizeof($url_parts) == 0) {
 
 if ($url_parts[0] == "static") {
     $filename = implode("/", $url_parts);
+    if (!file_exists("./".$filename))
+        die("file was not found");
+
     header('Content-Type: '.mime_content_type($filename));
     readfile("./".$filename);
     exit();
