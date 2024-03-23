@@ -83,3 +83,21 @@ $cart->printMap("map.json");
 > ```bash
 > php -S localhost:8080 bedouin.php
 > ```
+
+> [!TIP]
+> Regenerating the map by accessing a specific route.
+> ```php
+> # index.php
+> require_once "bedouin.php";
+>
+> if ($_SERVER["REQUEST_URI"] == "/your/custom/path") {
+>   require_once "./cartograph.php";
+>   $cart = new \Bedouin\Cartograph;
+>   $cart->printMap("map.json");
+> }
+> 
+> $router = new \Bedouin\Router;
+> $router->loadMap("map.json");
+> $route = $router->currentRoute();
+> if (isset($route->file)) include $route->file;
+> ```
