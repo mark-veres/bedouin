@@ -63,6 +63,18 @@ $cart->printMap("map.json");
 - access these files at the `/static/*` url
 - file names are case- and extension-sensitive
 
+## accessing route parameters
+- given a route `/posts/[slug]`
+- and an url `/posts/test`
+```php
+$router = new \Bedouin\Router;
+// ...
+print_r($router->params);
+/*
+  Array ( [slug] => test )
+*/
+```
+
 > [!NOTE]
 > coming soon:
 > - middleware
