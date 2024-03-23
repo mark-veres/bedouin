@@ -5,6 +5,7 @@ namespace Bedouin;
 class Router {
     public $map;
     public $file_404;
+    public $params = [];
 
     public function loadMap($path) {
         if (!file_exists($path)) {
@@ -46,6 +47,11 @@ class Router {
                 return $e->segment == $segment;
             }));
             $matches = (sizeof($dynamic_segments)!=0) ? $dynamic_segments : $matching_segments;
+
+            if (sizeof($dynamic_segments)!=0) {
+                $param_name = substr($matches[0]->segment, 1, -1);
+                $this->params[$param_name] = $segment;
+            }
         
             if (sizeof($matches) == 0) {
                 if (file_exists($this->file_404)) {
