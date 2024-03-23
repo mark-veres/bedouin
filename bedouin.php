@@ -23,6 +23,8 @@ class Router {
             function ($e) { return !empty($e); }
         ));
 
+        array_unshift($url_parts, "");
+
         if (sizeof($url_parts) == 0) {
             $index = array_search("", array_column($this->map, "segment"));
             return $this->map[$index];
