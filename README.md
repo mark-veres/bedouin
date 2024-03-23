@@ -34,6 +34,8 @@ if (isset($route->file)) include $route->file;
 # gen_map.php
 require_once "./cartograph.php";
 $cart = new \Bedouin\Cartograph;
+$cart->root_dir = __DIR__;
+$cart->route_folders = ["./routes", "./api"];
 $cart->printMap("map.json");
 ```
 

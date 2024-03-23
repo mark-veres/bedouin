@@ -4,6 +4,7 @@ namespace Bedouin;
 
 class Cartograph {
     public $route_folders = ["./routes"];
+    public $root_dir;
     private $file_404;
 
     /**
@@ -35,6 +36,7 @@ class Cartograph {
         if (is_dir($file_path)) return FALSE;
 
         // Remove path part that won't be in the final URL
+        $rel_file_path = substr($file_path, strlen(realpath($this->root_dir))+1);
         $rel_path = substr($file_path, strlen(realpath($route_folder))+1);
 
         // Extract HTTP method from filename
@@ -57,10 +59,12 @@ class Cartograph {
 
         $parts = array_filter(explode("/", $path));
 
+        array_unshift($parts, "");
+
         return [
             "parts" => $parts,
             "method" => $method,
-            "file_path" => $file_path
+            "file_path" => $rel_file_path
         ];
     }
 
@@ -78,19 +82,10 @@ class Cartograph {
 
             $current = &$data;
 
-            if (sizeof($parts) == 0) {
-                array_push($data, [
-                    "segment" => "",
-                    "method" => $method,
-                    "file" => $file_path,
-                    "children" => []
-                ]);
-            }
-
             foreach ($parts as $i => $segment) {
-                $matching_children = array_filter($current, function($e) use ($segment) {
+                $matching_children = array_values(array_filter($current, function($e) use ($segment) {
                     return $e["segment"] == $segment;
-                });
+                }));
 
                 if (sizeof($matching_children) == 0) {
                     $array_length = array_push($current, [
@@ -103,9 +98,11 @@ class Cartograph {
                     continue;
                 }
                 $index = array_search($segment, array_column($current, "segment"));
-                $current[$index]["file"] = $file_path;
-                $current[$index]["method"] = $method;
-                $current = &$data[$index]["children"];
+                if (sizeof($parts)-1 == $i) {
+                    $current[$index]["file"] = $file_path;
+                    $current[$index]["method"] = $method;
+                }
+                $current = &$current[$index]["children"];
             }
         }
 
