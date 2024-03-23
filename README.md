@@ -18,10 +18,31 @@ wget https://raw.githubusercontent.com/mark-veres/bedouin/main/bedouin.php
 wget https://raw.githubusercontent.com/mark-veres/bedouin/main/cartograph.php
 ```
 
+## example setup
+
+```php
+# index.php
+require_once "bedouin.php";
+
+$router = new \Bedouin\Router;
+$router->loadMap("map.json");
+$route = $router->currentRoute();
+if (isset($route->file)) include $route->file;
+```
+
+```php
+# gen_map.php
+require_once "./cartograph.php";
+$cart = new \Bedouin\Cartograph;
+$cart->printMap("map.json");
+```
+
 ## usage
-- create the `routes` directory in same one as `bedouin.php`
-- run the `cartograph.php` script when you want to generate your map
-- route all requests to the `bedouin.php` file
+- copy the `bedouin.php` and `cartograph.php` files in the desired directory
+- create the `routes` and `static` directory
+- create an `index.php` file will handle all requests
+- redirect all requests to `index.php`
+- create another PHP file that will use the cartograph API to generate the map
 
 ## directory structure
 |file|url|method|
@@ -46,8 +67,8 @@ wget https://raw.githubusercontent.com/mark-veres/bedouin/main/cartograph.php
 > coming soon:
 > - middleware
 > - accessing dynamic parameters from scripts
-> - static content
-> - better extendability and configuration
+> - map splits (performance optimization when dealing with many routes)
+> - templates
 
 > [!TIP]
 > Redirecting all requests to `bedouin.php` on an Apache server.
