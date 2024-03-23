@@ -77,10 +77,12 @@ print_r($router->params);
 */
 ```
 
+## middleware
+- create a file ending in `.mw.php` or `.mw.get.php` (or any HTTP method for that matter)
+- the middleware will be "bound" to the index handler of the directory it is placed in
+
 > [!NOTE]
 > coming soon:
-> - middleware
-> - accessing dynamic parameters from scripts
 > - map splits (performance optimization when dealing with many routes)
 > - templates
 

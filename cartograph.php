@@ -52,19 +52,24 @@ class Cartograph {
         $path = preg_replace("/.php/", "", $path);
         $path = preg_replace("/index$/", "", $path);
 
+        // Check if file is middleware
+        $is_middleware = preg_match("/(.*).mw/", $path) ? TRUE : FALSE;
+
         if ($path == "404") {
             $this->file_404 = $file_path;
             return FALSE;
         }
 
         $parts = array_filter(explode("/", $path));
+        if ($is_middleware) array_pop($parts);
 
         array_unshift($parts, "");
 
         return [
             "parts" => $parts,
             "method" => $method,
-            "file_path" => $rel_file_path
+            "file_path" => $rel_file_path,
+            "is_middleware" => $is_middleware
         ];
     }
 
@@ -78,7 +83,7 @@ class Cartograph {
         }
 
         foreach($merged_routes as $route) {
-            [$parts, $method, $file_path] = array_values($route);
+            [$parts, $method, $file_path, $is_middleware] = array_values($route);
 
             $current = &$data;
 
@@ -92,7 +97,12 @@ class Cartograph {
                         "segment" => $segment,
                         "method" => (sizeof($parts)-1 == $i) ? $method : "all",
                         "file" => (sizeof($parts)-1 == $i) ? $file_path : "",
-                        "children" => []
+                        "children" => [],
+                        "middleware" => []
+                    ]);
+                    if ($is_middleware) array_push($current[$array_length-1]["middleware"], [
+                        "method" => $method,
+                        "file" => $file_path
                     ]);
                     $current = &$current[$array_length-1]["children"];
                     continue;
@@ -101,6 +111,10 @@ class Cartograph {
                 if (sizeof($parts)-1 == $i) {
                     $current[$index]["file"] = $file_path;
                     $current[$index]["method"] = $method;
+                    if ($is_middleware) array_push($current[$index]["middleware"], [
+                        "method" => $method,
+                        "file" => $file_path
+                    ]);
                 }
                 $current = &$current[$index]["children"];
             }
