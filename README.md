@@ -11,11 +11,7 @@ Two files:
 
 ## installation
 ```bash
-wget https://raw.githubusercontent.com/mark-veres/bedouin/main/bedouin.php
-```
-
-```bash
-wget https://raw.githubusercontent.com/mark-veres/bedouin/main/cartograph.php
+composer require mark-veres/bedouin
 ```
 
 ## example setup
