@@ -25,11 +25,6 @@ class Router {
 
         array_unshift($url_parts, "");
 
-        if (sizeof($url_parts) == 0) {
-            $index = array_search("", array_column($this->map, "segment"));
-            return $this->map[$index];
-        }
-
         if ($url_parts[0] == "static") {
             $filename = implode("/", $url_parts);
             if (!file_exists("./".$filename))
