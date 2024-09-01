@@ -1,4 +1,5 @@
 {
     "name": "mark-veres/bedouin",
+    "description": "A file-based PHP routing system.",
     "version": "1.0.0"
 }
