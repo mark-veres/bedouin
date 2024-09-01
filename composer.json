@@ -1,5 +1,8 @@
 {
     "name": "mark-veres/bedouin",
     "description": "A file-based PHP routing system.",
-    "version": "1.0.0"
+    "version": "1.0.0",
+    "autoload": {
+        "psr-4": {"Bedouin\\": "src/"}
+    }
 }
